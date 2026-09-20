@@ -1,0 +1,25 @@
+image:
+  file: .gitpod.Dockerfile
+
+tasks:
+  - name: Android SDK setup
+    init: |
+      export ANDROID_HOME=/home/gitpod/android-sdk
+      export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools
+      mkdir -p $ANDROID_HOME/cmdline-tools
+      cd $ANDROID_HOME/cmdline-tools
+      curl -o cmdline-tools.zip https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip
+      unzip -q cmdline-tools.zip
+      mv cmdline-tools latest
+      yes | sdkmanager --licenses > /dev/null
+      sdkmanager "platform-tools" "platforms;android-35" "build-tools;35.0.0"
+      cd /workspace/time-notification
+      gradle wrapper --gradle-version 8.9
+    command: |
+      export ANDROID_HOME=/home/gitpod/android-sdk
+      export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools
+      echo "Run: ./gradlew assembleDebug"
+
+vscode:
+  extensions:
+    - fwcd.kotlin
